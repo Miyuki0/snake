@@ -55,6 +55,7 @@ public class Snake {
         for (Point p : snake) {
             map[p.y][p.x] = Case.SNAKE;
         }
+        //Ajouter les déplacements
         if((map[snake.get(0).y][snake.get(0).x] != Case.FOOD))
         {
             map[snake.get(snake.size()-1).x][snake.get(snake.size()-1).x] = Case.VOID;
