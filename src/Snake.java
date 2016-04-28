@@ -1,11 +1,18 @@
+import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 
 public class Snake {
 
-    public final static double NewFoodTime = 5.0;
+    public final static int NEWFOODTIME = 5000;
+    public final static long MAPUPDATETIME = 5;
     public final static int WIDTH = 20;
     public final static int HEIGHT = 20;
     private double lastRefresh;
@@ -36,17 +43,20 @@ public class Snake {
             snake.add(new Point((WIDTH / 2) + i, HEIGHT / 2));
         }
 
-    }
+
+        ScheduledExecutorService mapUpdate = Executors.newSingleThreadScheduledExecutor();
+        ScheduledExecutorService foodGenerate = Executors.newSingleThreadScheduledExecutor();
+
+        mapUpdate.scheduleAtFixedRate((Runnable) this::mapUpdater, 0, MAPUPDATETIME, TimeUnit.SECONDS);
+
+        foodGenerate.scheduleAtFixedRate((Runnable) this::foodGenerator, 0, NEWFOODTIME, TimeUnit.SECONDS);
+
+        }
+
 
     public void mapUpdater() {
         for (Point p : snake) {
             map[p.y][p.x] = Case.SNAKE;
-        }
-
-        if(lastRefresh + NewFoodTime > time)
-        {
-            lastRefresh = time;
-            foodGenerator();
         }
 
     }
