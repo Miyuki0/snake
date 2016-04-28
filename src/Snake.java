@@ -1,9 +1,6 @@
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.*;
+
 
 
 public class Snake {
@@ -29,11 +26,21 @@ public class Snake {
 
     public Snake() {
         map = new Case[HEIGHT][WIDTH];
+
+        //on parcours une premiere fois la map pour mettre toutes les cases comme étant des murs
         for (int i = 0; i < HEIGHT; i++) {
             for (int j = 0; j < WIDTH; j++) {
+                map[i][j] = Case.MUR;
+            }
+        }
+        //on remplace toutes les cases par des cases vides, en excluant la bordure
+        for (int i = 1; i < HEIGHT-1; i++) {
+            for (int j = 1; j < WIDTH-1; j++) {
                 map[i][j] = Case.VOID;
             }
         }
+
+
         direction = Direction.GAUCHE;
         snake = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
@@ -79,5 +86,29 @@ public class Snake {
         else
             foodGenerator();
 
+    }
+
+    // testGameOver teste si la partie est perdue
+    public void testGameOver(){
+        //parcours de snake pour savoir si l'une des cases est un mur
+        for (Point p : snake){
+            if(map[p.y][p.x]== Case.WALL){
+                //la partie est perdue, on lance un game over
+                gameOver();
+            }
+        }
+        //on teste si la tête a les même coordonnées qu'un point du snake (autre que la tête donc)
+        for(int i = 1; i<snake.size(); i++){
+            if((snake.get(0).x == snake.get(i).x) && (snake.get(0).y == snake.get(i).y)){
+                gameOver();
+            }
+
+        }
+
+
+    }
+    //méthode gameOver appelée quand la partie est perdue !!!!! A FAIRE !!!!!
+    public void gameOver(){
+        //remplir la méthode gameOver
     }
 }
