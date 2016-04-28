@@ -50,7 +50,6 @@ public class Snake {
         mapUpdate.scheduleAtFixedRate((Runnable) this::mapUpdater, 0, MAPUPDATETIME, TimeUnit.SECONDS);
 
         foodGenerate.scheduleAtFixedRate((Runnable) this::foodGenerator, 0, NEWFOODTIME, TimeUnit.SECONDS);
-
         }
 
 
