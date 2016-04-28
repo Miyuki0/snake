@@ -1,7 +1,4 @@
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -42,6 +39,7 @@ public class Snake {
         for (int i = 0; i < 5; i++) {
             snake.add(new Point((WIDTH / 2) + i, HEIGHT / 2));
         }
+        food = new Point(0,0);
 
 
         ScheduledExecutorService mapUpdate = Executors.newSingleThreadScheduledExecutor();
@@ -57,6 +55,11 @@ public class Snake {
         for (Point p : snake) {
             map[p.y][p.x] = Case.SNAKE;
         }
+        if((map[snake.get(0).y][snake.get(0).x] != Case.FOOD))
+        {
+            map[snake.get(snake.size()-1).x][snake.get(snake.size()-1).x] = Case.VOID;
+            snake.remove(snake.size()-1);
+        }
 
     }
 
@@ -64,8 +67,12 @@ public class Snake {
         int x = (int)(Math.random()*WIDTH);
         int y = (int)(Math.random()*HEIGHT);
 
-        if(map[y][x] == Case.VOID)
+        if(map[y][x] == Case.VOID) {
             map[y][x] = Case.FOOD;
+            map[food.y][food.x]=Case.VOID;
+            mapUpdater();
+            food.setLocation(x,y);
+        }
         else
             foodGenerator();
 
